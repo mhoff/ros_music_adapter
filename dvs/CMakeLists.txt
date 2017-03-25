@@ -1,0 +1,61 @@
+cmake_minimum_required(VERSION 2.8)
+
+project("ros_music_dvs_adapter")
+
+# add modules for finding JSONCPP and MUSIC
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+
+# generates catkin_INCLUDE_DIRS and catkin_LIBRARIES for all components
+find_package(catkin REQUIRED
+    COMPONENTS
+    ros_music_adapter
+    dvs_msgs
+    roscpp
+    roscpp_serialization
+    rosconsole
+    rostime
+)
+
+find_package(MUSIC REQUIRED)
+find_package(MPI REQUIRED)
+
+include_directories(
+    include
+    ${catkin_INCLUDE_DIRS}
+    ${MUSIC_INCLUDE_DIRS}
+    ${MPI_INCLUDE_PATH}
+)
+
+set(CMAKE_CXX_COMPILE_FLAGS ${CMAKE_CXX_COMPILE_FLAGS} ${MPI_COMPILE_FLAGS})
+set(CMAKE_CXX_LINK_FLAGS ${CMAKE_CXX_LINK_FLAGS} ${MPI_LINK_FLAGS})
+set(CMAKE_CXX_FLAGS "-O3")
+
+catkin_package(
+    CATKIN_DEPENDS
+        ros_music_adapter
+        dvs_msgs
+        roscpp
+        roscpp_serialization
+        rosconsole
+        rostime
+    DEPENDS
+        MUSIC
+        MPI
+)
+
+find_library(GSL gsl REQUIRED)
+find_library(BLAS gslcblas REQUIRED)
+find_library(PTHREAD pthread REQUIRED)
+
+# TODO static library rtclock is found implicitly... hack?
+# find_library(RTCLOCK rtclock REQUIRED)
+include_directories(../core/lib/)
+
+add_executable(ros_event_sensor_adapter adapters/ros_event_sensor_adapter.cpp)
+
+target_link_libraries(ros_event_sensor_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} rtclock)
+
+install(
+    TARGETS ros_event_sensor_adapter
+    RUNTIME DESTINATION bin
+)

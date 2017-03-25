@@ -8,7 +8,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 # generates catkin_INCLUDE_DIRS and catkin_LIBRARIES for all components
 find_package(catkin REQUIRED
     COMPONENTS
-    dvs_msgs
     roscpp
     roscpp_serialization
     rosconsole
@@ -33,7 +32,6 @@ set(CMAKE_CXX_FLAGS "-O3")
 
 catkin_package(
     CATKIN_DEPENDS
-        dvs_msgs
         roscpp
         roscpp_serialization
         rosconsole
@@ -53,7 +51,6 @@ include_directories(lib/)
 
 add_executable(ros_command_adapter adapters/ros_command_adapter.cpp)
 add_executable(ros_sensor_adapter adapters/ros_sensor_adapter.cpp)
-add_executable(ros_event_sensor_adapter adapters/ros_event_sensor_adapter.cpp)
 add_executable(linear_readout_decoder decoder/linear_readout.cpp)
 add_executable(nef_encoder encoder/nef_encoder.cpp)
 add_executable(connect_adapter adapters/connect.cpp)
@@ -62,7 +59,6 @@ add_executable(poisson_encoder encoder/poisson_encoder.cpp)
 
 target_link_libraries(ros_command_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} ${JSONCPP_LIBRARY} rtclock)
 target_link_libraries(ros_sensor_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} rtclock)
-target_link_libraries(ros_event_sensor_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} rtclock)
 target_link_libraries(linear_readout_decoder ${MUSIC_LIBRARIES} ${MPI_LIBRARIES} ${JSONCPP_LIBRARY} ${GSL} ${BLAS})
 target_link_libraries(nef_encoder ${MUSIC_LIBRARIES} ${MPI_LIBRARIES})
 target_link_libraries(rate_encoder ${MUSIC_LIBRARIES} ${MPI_LIBRARIES}) 
@@ -76,7 +72,6 @@ target_link_libraries(connect_adapter ${MUSIC_LIBRARIES} ${MPI_LIBRARIES} ${JSON
 install(TARGETS
     ros_command_adapter
     ros_sensor_adapter
-    ros_event_sensor_adapter
     linear_readout_decoder
     nef_encoder
     rate_encoder
@@ -84,3 +79,4 @@ install(TARGETS
     connect_adapter
     RUNTIME DESTINATION bin
 )
+

@@ -6,7 +6,7 @@
 
 #define BENCHMARK_ROS_CALLBACK 0
 #define DEBUG_TICK 0
-#define EVENT_TRANSFORMATION 0
+#define DEBUG_EVENT_TRANSFORMATION 0
 
 #if BENCHMARK_ROS_CALLBACK
 #include <time.h>
@@ -166,14 +166,16 @@ RosEventSensorAdapter::eventArrayCallback(const dvs_msgs::EventArray msg) {
 		std::cout << "eventArrayCallback " << msg.events.size() << std::endl;
 	}
 #endif
+    double tick_time = last_tick_time + 2 * timestep;
 	for (int i = 0; i < msg.events.size(); i++) {
 		dvs_msgs::Event event = msg.events[i];
 		int index = event.y * msg.width + event.x;
 		// TODO respect polarity?
 #if DEBUG_EVENT_TRANSFORMATION
-		std::cout << "event: ts = " << last_tick_time << ", index = " << index << std::endl;
+		std::cout << "event: ts = " << tick_time << ", x = " << event.x << ", y = " << event.y << ", index = " << index << std::endl;
 #endif
-		port_out->insertEvent(last_tick_time, MUSIC::GlobalIndex(index));
+        // TODO + music_node_timestep
+		port_out->insertEvent(tick_time, MUSIC::GlobalIndex(index));
 	}
 #if BENCHMARK_ROS_CALLBACK
 	clock_gettime(CLOCK_MONOTONIC, &finish);
