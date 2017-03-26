@@ -15,11 +15,12 @@
 #define DEBUG_OUTPUT false
 
 const double DEFAULT_TIMESTEP = 1e-3;
-const double DEFAULT_SENSOR_UPDATE_RATE = 30;
+const double DEFAULT_SENSOR_UPDATE_RATE = 100;
 const double DEFAULT_RTF = 1.0;
-const std::string DEFAULT_ROS_NODE_NAME = "ros_event_sensor_node";
+const std::string DEFAULT_ROS_NODE_NAME = "music_dvs_adapter_node";
 
-class RosEventSensorAdapter {
+class DVSAdapter
+{
 public:
     void init(int argc, char** argv);
     bool ratesMatch(double precision);
@@ -38,6 +39,7 @@ private:
     MUSIC::Setup* setup;
     MUSIC::Runtime* runtime;
     MUSIC::EventOutputPort* port_out;
+    MUSIC::EventOutputPort* port_out_polarity[2];
     double stoptime;
     double sensor_update_rate;
     double timestep;
@@ -45,6 +47,7 @@ private:
 
     void initROS(int argc, char** argv);
     void initMUSIC(int argc, char** argv);
+    MUSIC::EventOutputPort* initOutput(std::string, int&);
 
     void eventArrayCallback(const dvs_msgs::EventArray msg);
 

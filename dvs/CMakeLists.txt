@@ -51,11 +51,11 @@ find_library(PTHREAD pthread REQUIRED)
 # find_library(RTCLOCK rtclock REQUIRED)
 include_directories(../core/lib/)
 
-add_executable(ros_event_sensor_adapter adapters/ros_event_sensor_adapter.cpp)
+add_executable(dvs_adapter adapters/dvs_adapter.cpp)
 
-target_link_libraries(ros_event_sensor_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} rtclock)
+target_link_libraries(dvs_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} rtclock)
 
 install(
-    TARGETS ros_event_sensor_adapter
+    TARGETS dvs_adapter
     RUNTIME DESTINATION bin
 )
