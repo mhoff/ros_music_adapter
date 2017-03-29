@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project("ros_music_dvs_adapter")
 
-# add modules for finding JSONCPP and MUSIC
+# add module for finding MUSIC
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
 # generates catkin_INCLUDE_DIRS and catkin_LIBRARIES for all components

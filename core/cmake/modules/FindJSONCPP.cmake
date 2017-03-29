@@ -375,17 +375,18 @@ if(NOT JSONCPP_FOUND)
         set(JSONCPP_INCLUDE_DIRS "${JsonCpp_INCLUDE_DIR}")
         unset(JSONCPP_LIBRARY_IS_SHARED)
 
-        if(__jsoncpp_have_interface_support AND NOT TARGET jsoncpp_interface)
-            add_library(jsoncpp_interface INTERFACE)
-            set_target_properties(jsoncpp_interface PROPERTIES
-                INTERFACE_LINK_LIBRARIES "${JsonCpp_LIBRARY}"
-                INTERFACE_INCLUDE_DIRECTORIES "${JsonCpp_INCLUDE_DIR}")
-        endif()
-        if(__jsoncpp_have_namespaced_targets)
-            if(NOT TARGET JsonCpp::JsonCpp)
-                add_library(JsonCpp::JsonCpp ALIAS jsoncpp_interface)
-            endif()
-        endif()
+        # FIXME the following lines lead to errors on some systems
+        #if(__jsoncpp_have_interface_support AND NOT TARGET jsoncpp_interface)
+        #    add_library(jsoncpp_interface INTERFACE)
+        #    set_target_properties(jsoncpp_interface PROPERTIES
+        #        INTERFACE_LINK_LIBRARIES "${JsonCpp_LIBRARY}"
+        #        INTERFACE_INCLUDE_DIRECTORIES "${JsonCpp_INCLUDE_DIR}")
+        #endif()
+        #if(__jsoncpp_have_namespaced_targets)
+        #    if(NOT TARGET JsonCpp::JsonCpp)
+        #        add_library(JsonCpp::JsonCpp ALIAS jsoncpp_interface)
+        #    endif()
+        #endif()
     endif()
 endif()
 
