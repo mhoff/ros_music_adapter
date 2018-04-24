@@ -3,7 +3,7 @@
 #include <math.h>
 
 #include <ros/ros.h>
-#include "dvs_msgs/EventArray.h"
+#include <dvs_msgs/EventArray.h>
 
 #include <music.hh>
 #include <mpi.h>

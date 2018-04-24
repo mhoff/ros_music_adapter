@@ -78,6 +78,9 @@ RosSensorAdapter::initROS(int argc, char** argv)
         case Twist:
             subscriber = n.subscribe(ros_topic, 1000, &RosSensorAdapter::twistCallback, this);
             break;
+        case Vector3:
+            subscriber = n.subscribe(ros_topic, 1000, &RosSensorAdapter::vector3Callback, this);
+            break;
         case Float64MultiArray:
             subscriber = n.subscribe(ros_topic, 1000, &RosSensorAdapter::float64MultiArrayCallback, this);
             break;
@@ -103,6 +106,9 @@ RosSensorAdapter::initMUSIC(int argc, char** argv)
     }
     else if (_msg_type.compare("Twist") == 0){
         msg_type = Twist;
+    }
+    else if (_msg_type.compare("Vector3") == 0){
+        msg_type = Vector3;
     }
     else if (_msg_type.compare("FloatArray") == 0){
         msg_type = Float64MultiArray;
@@ -143,10 +149,7 @@ RosSensorAdapter::initMUSIC(int argc, char** argv)
     }
          
     // Declare where in memory to put data
-    MUSIC::ArrayData dmap (data,
-      		 MPI::DOUBLE,
-      		 0,
-      		 datasize);
+    MUSIC::ArrayData dmap (data, MPI::DOUBLE, 0, datasize);
     port_out->map (&dmap, 1);
 }
 
@@ -262,6 +265,28 @@ RosSensorAdapter::twistCallback(const geometry_msgs::Twist msg)
             data[i] = -1;
 
     }
+
+    pthread_mutex_unlock(&data_mutex);    
+}
+
+void
+RosSensorAdapter::vector3Callback(geometry_msgs::Vector3 msg)
+{
+    pthread_mutex_lock(&data_mutex);
+
+//    std::cout << "vector (" << msg.x << ", " << msg.y << ", " << msg.z << ") [" << datasize << "]" << std::endl;
+
+    if (datasize > 0) {
+        data[0] = msg.x;
+    }
+    if (datasize > 1) {
+        data[1] = msg.y;
+    }
+    if (datasize > 2) {
+        data[2] = msg.z;
+    }
+    
+//    std::cout << "vector (" << msg.x << ", " << msg.y << ", " << msg.z << ") [" << datasize << "]" << std::endl;
 
     pthread_mutex_unlock(&data_mutex);    
 }

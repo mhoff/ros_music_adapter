@@ -5,6 +5,7 @@
 #include <ros/ros.h>
 #include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
+#include "geometry_msgs/Vector3.h"
 #include "std_msgs/Float64MultiArray.h"
 
 #include <music.hh>
@@ -21,7 +22,7 @@ const double DEFAULT_SENSOR_UPDATE_RATE = 30;
 const double DEFAULT_RTF = 1.0;
 const std::string DEFAULT_ROS_NODE_NAME = "ros_sensor_node";
 
-enum msg_types {Laserscan, Twist, Float64MultiArray}; 
+enum msg_types {Laserscan, Twist, Vector3, Float64MultiArray}; 
 
 class RosSensorAdapter
 {
@@ -57,6 +58,7 @@ class RosSensorAdapter
 
         void laserscanCallback(const sensor_msgs::LaserScanConstPtr& msg);
         void twistCallback(const geometry_msgs::Twist msg);
+        void vector3Callback(const geometry_msgs::Vector3 msg);
         void float64MultiArrayCallback(const std_msgs::Float64MultiArray msg);
 
 };
