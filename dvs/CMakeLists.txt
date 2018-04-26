@@ -51,14 +51,14 @@ include_directories(
     ${MPI_INCLUDE_PATH}
 )
 
-# TODO static library rtclock is found implicitly... hack?
-# find_library(RTCLOCK rtclock REQUIRED)
-include_directories(../core/lib/)
+# TODO redundancy, hack
+add_library(rtclock2 STATIC lib/rtclock.cpp)
+include_directories(lib/)
 
 add_executable(dvs_adapter adapters/dvs_adapter.cpp)
 add_dependencies(dvs_adapter ${catkin_EXPORTED_TARGETS})
 
-target_link_libraries(dvs_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} rtclock)
+target_link_libraries(dvs_adapter ${catkin_LIBRARIES} ${MUSIC_LIBRARIES} ${PTHREAD} ${MPI_LIBRARIES} rtclock2)
 
 install(
     TARGETS dvs_adapter
