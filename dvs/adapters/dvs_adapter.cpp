@@ -41,7 +41,6 @@ int main(int argc, char** argv)
     }
 
     ros_adapter.finalize();
-
 }
 
 bool DVSAdapter::ratesMatch(double precision)
@@ -92,10 +91,8 @@ void DVSAdapter::initMUSIC(int argc, char** argv)
 
     int width_ = -1;
 
-    port_out = initOutput("out", width_);
-    // TODO MUSIC bug ...
-    port_out_polarity[true] = NULL; // initOutput("out_on", width_);
-    port_out_polarity[false] = NULL; // initOutput("out_off", width_);
+    port_out_polarity[0] = initOutput("on", width_);
+    port_out_polarity[1] = initOutput("off", width_);
 }
 
 MUSIC::EventOutputPort* DVSAdapter::initOutput(std::string name, int &width)
@@ -210,10 +207,12 @@ DVSAdapter::eventArrayCallback(const dvs_msgs::EventArray msg)
 #if DEBUG_EVENT_TRANSFORMATION
         std::cout << "event: ts = " << tick_time << ", x = " << event.x << ", y = " << event.y << ", index = " << index << std::endl;
 #endif
+        /*
         if (port_out != NULL)
         {
             port_out->insertEvent(tick_time, MUSIC::GlobalIndex(index));
         }
+        */
         MUSIC::EventOutputPort* port_pol = port_out_polarity[event.polarity];
         if (port_pol != NULL)
         {

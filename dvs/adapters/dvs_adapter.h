@@ -38,7 +38,6 @@ private:
     MPI::Intracomm comm;
     MUSIC::Setup* setup;
     MUSIC::Runtime* runtime;
-    MUSIC::EventOutputPort* port_out;
     MUSIC::EventOutputPort* port_out_polarity[2];
     double stoptime;
     double sensor_update_rate;
